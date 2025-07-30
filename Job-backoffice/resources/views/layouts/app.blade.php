@@ -19,11 +19,12 @@
 <body class="font-sans antialiased">
     <div class="bg-gray-100">
         <div class="flex">
-                @include('layouts.navigation')
+            @include('layouts.navigation')
 
 
 
-                <div class="flex-1 min-h-screen bg-gray-100">
+            <div class="flex-1 min-h-screen bg-gray-100">
+                <div class="">
                     <!-- Page Heading -->
                     @isset($header)
                         <header class="bg-white shadow">
@@ -38,6 +39,18 @@
                         {{ $slot }}
                     </main>
                 </div>
+
+
+                <!-- Footer-->
+                <!--
+                <footer class="bg-white shadow mt-6 ">
+                    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                        <div class="text-center text-gray-500 text-sm">
+                            &copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}. All rights reserved.
+                        </div>
+                    </div>
+                </footer> -->
+            </div>
 
         </div>
 

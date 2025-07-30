@@ -17,13 +17,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/', [DashboardController::class, "index"])->middleware(['verified'])->name('dashboard.index');
+    Route::get('/', [DashboardController::class, "index"])->middleware(['verified'])->name('dashboard');
 
-    Route::get('company', [CompanyController::class, 'index'])->name('company.index');
-    Route::get('job-application', [JobApplicationController::class, 'index'])->name('job-application.index');
-    Route::get('job-category', [JobCategoryController::class, 'index'])->name('job-category.index');
-    Route::get('job-vacancy', [JobVacancyController::class, 'index'])->name('job-vacancy.index');
-    Route::get('user', [UserController::class, 'index'])->name('user.index');
+    Route::resource('company', CompanyController::class);
+    Route::resource('job-application', JobApplicationController::class);
+    Route::resource('job-category', JobCategoryController::class);
+    Route::put('job-category/{id}/restore', [JobCategoryController::class,"restore"])->name("job-category.restore");
+    Route::resource('job-vacancy', JobVacancyController::class);
+    Route::resource('user', UserController::class);
 
 });
 
