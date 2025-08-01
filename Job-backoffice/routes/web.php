@@ -20,10 +20,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, "index"])->middleware(['verified'])->name('dashboard');
 
     Route::resource('company', CompanyController::class);
+    Route::put('company/{id}/restore', [CompanyController::class,"restore"])->name("company.restore");
+
     Route::resource('job-application', JobApplicationController::class);
+
     Route::resource('job-category', JobCategoryController::class);
     Route::put('job-category/{id}/restore', [JobCategoryController::class,"restore"])->name("job-category.restore");
+    
     Route::resource('job-vacancy', JobVacancyController::class);
+
     Route::resource('user', UserController::class);
 
 });

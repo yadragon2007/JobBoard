@@ -4,15 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class JobCategoryCreateRequest extends FormRequest
+class CompanyUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        // return $user->has("role:admin");
-        return true; // Assuming all users can create job categories for simplicity
+        return true;
     }
 
     /**
@@ -23,12 +22,11 @@ class JobCategoryCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:companies,name',
+            'name' => 'required|string|max:255|unique:companies,name,'.$this->route('companies'),
             'location' => 'required|string|max:255',
             'industry' => 'required|string|max:255',
             'website' => 'string|max:255',
 
-            // owner data
             'ownerName' => 'required|string|max:255',
         ];
     }
@@ -52,7 +50,6 @@ class JobCategoryCreateRequest extends FormRequest
             'website.string' => 'The company website must be a string.',
             'website.max' => 'The company website must not be greater than 255 characters.',
 
-            // owner msg
             'ownerName.required' => 'The company name is required.',
             'ownerName.string' => 'The company name must be a string.',
             'ownerName.max' => 'The company name must not be greater than 255 characters.',
