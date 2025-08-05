@@ -74,7 +74,7 @@
                         </div>
                         <div class="mb-4">
                             <label for="name" class="block text-sm font-medium text-gray-700">Company Name</label>
-                            <input type="text" name="name" id="name" value="{{ old('email', "") }}"
+                            <input type="text" name="name" id="name" value="{{ old('name', "") }}"
                                 class="{{ $errors->has('name') ? 'outline-1 outline-red-500 outline' : ''}}  mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             @error('name')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -82,7 +82,7 @@
                         </div>
                         <div class="mb-4">
                             <label for="industry" class="block text-sm font-medium text-gray-700">Industry</label>
-                            <input type="text" name="industry" id="industry" value="{{ old('email', "") }}"
+                            <input type="text" name="industry" id="industry" value="{{ old('industry', "") }}"
                                 class="{{ $errors->has('industry') ? 'outline-1 outline-red-500 outline' : ''}}  mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             @error('industry')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>

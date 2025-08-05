@@ -23,13 +23,8 @@ class JobCategoryCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:companies,name',
-            'location' => 'required|string|max:255',
-            'industry' => 'required|string|max:255',
-            'website' => 'string|max:255',
+            'name' => 'required|string|max:255|unique:job_categories,name',
 
-            // owner data
-            'ownerName' => 'required|string|max:255',
         ];
     }
 
@@ -43,19 +38,6 @@ class JobCategoryCreateRequest extends FormRequest
             'name.string' => 'The company name must be a string.',
             'name.max' => 'The company name must not be greater than 255 characters.',
             'name.unique' => 'The company name must be unique.',
-            'location.required' => 'The company location is required.',
-            'location.string' => 'The company location must be a string.',
-            'location.max' => 'The company location must not be greater than 255 characters.',
-            'industry.required' => 'The company industry is required.',
-            'industry.string' => 'The company industry must be a string.',
-            'industry.max' => 'The company industry must not be greater than 255 characters.',
-            'website.string' => 'The company website must be a string.',
-            'website.max' => 'The company website must not be greater than 255 characters.',
-
-            // owner msg
-            'ownerName.required' => 'The company name is required.',
-            'ownerName.string' => 'The company name must be a string.',
-            'ownerName.max' => 'The company name must not be greater than 255 characters.',
         ];
     }
 }

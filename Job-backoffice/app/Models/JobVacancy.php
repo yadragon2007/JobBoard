@@ -44,6 +44,10 @@ class JobVacancy extends Model
     {
         return $this->belongsTo(JobCategory::class, 'job_category_id', 'id');
     }
+    public function applications()
+    {
+        return $this->hasMany(JobApplication::class, "job_vacancy_id", "id");
+    }
 
 
 }
