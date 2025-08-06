@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\JobApplicationUpdateRequest;
+use App\Models\JobApplication;
 use Illuminate\Http\Request;
 
 class JobApplicationController extends Controller
@@ -9,25 +11,17 @@ class JobApplicationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view("jobApplication.index");
-    }
+        $query = JobApplication::latest();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        if ($request->input("archived") == "true") {
+            $query->onlyTrashed();
+        }
+
+        $applications = $query->paginate(8)->onEachSide(1);
+        return view("jobApplication.index", compact("applications"));
     }
 
     /**
@@ -35,23 +29,20 @@ class JobApplicationController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $application = JobApplication::findOrFail($id);
+        return view("jobApplication.show", compact("application"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(JobApplicationUpdateRequest $request, string $id)
     {
-        //
+        $application = JobApplication::findOrFail($id);
+        $application->update([
+            "status" => $request->input("status"),
+        ]);
+        return redirect()->route("job-application.show", $id)->with("success", "status updated to " . $application->status . " sccessfully");
     }
 
     /**
@@ -59,6 +50,17 @@ class JobApplicationController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $jobApplication = JobApplication::findOrFail($id);
+        $jobApplication->delete();
+        return redirect()->route('job-application.index')->with('success', 'Application archived successfully.');
+    }
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore(Request $request, $id)
+    {
+        $jobApplication = JobApplication::withTrashed()->findOrFail($id);
+        $jobApplication->restore();
+        return redirect()->route('job-application.index', ["archived" => "true"])->with('success', 'Application restored successfully.');
     }
 }

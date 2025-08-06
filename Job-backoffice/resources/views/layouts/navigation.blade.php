@@ -20,6 +20,9 @@
         <x-nav-link :href="route('job-vacancy.index')" :active="request()->routeIs('job-vacancy.index')">
             Job Vacancies
         </x-nav-link>
+        <x-nav-link :href="route('job-application.index')" :active="request()->routeIs('job-application.index')">
+            Job Applications
+        </x-nav-link>
         <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
             Users
         </x-nav-link>
