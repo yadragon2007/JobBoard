@@ -47,9 +47,15 @@
                         id
                     </th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Title</th>
-                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Company</th>
+                    @if (auth()->user()->role === "admin")
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Company</th>
+                    @endif
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Address</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Type</th>
+                    @if (auth()->user()->role === "company-owner")
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Applications</th>
+                    @endif
+
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Salary</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Actions</th>
                 </tr>
@@ -76,20 +82,22 @@
 
 
                         </td>
+                        @if (auth()->user()->role === "admin")
+                            <td class="px-4 py-3 text-sm font-semibold text-gray-800">
+                                @if (request()->input("archived") === "true")
+                                    <span>
+                                        {{ $job->company->name }}
+                                    </span>
+                                @else
+                                    <a href="{{ route("company.show", $job->company->id) }}" class="text-blue-500 hover:underline">
+                                        {{ $job->company->name }}
+                                    </a>
+                                @endif
 
-                        <td class="px-4 py-3 text-sm font-semibold text-gray-800">
-                            @if (request()->input("archived") === "true")
-                                <span>
-                                    {{ $job->company->name }}
-                                </span>
-                            @else
-                                <a href="{{ route("company.show", $job->company->id) }}" class="text-blue-500 hover:underline">
-                                    {{ $job->company->name }}
-                                </a>
-                            @endif
 
+                            </td>
+                        @endif
 
-                        </td>
 
                         <td class="px-4 py-3 text-sm font-semibold text-gray-800">
                             {{ $job->location }}
@@ -97,6 +105,12 @@
                         <td class="px-4 py-3 text-sm font-semibold text-gray-800">
                             {{ $job->employment_type }}
                         </td>
+                        @if (auth()->user()->role === "company-owner")
+                            <td class="px-4 py-3 text-sm font-semibold text-gray-800">
+                                {{ $job->applicationsCount }}
+                            </td>
+                        @endif
+
                         <td class=" px-4 py-3 text-sm font-semibold text-gray-800">
                             ${{number_format($job->salary, 2)}}
                         </td>

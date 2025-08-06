@@ -44,8 +44,11 @@
                     </th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Name</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Job</th>
-                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">score</th>
-                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">status</th>
+                    @if (auth()->user()->role === "admin")
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Company</th>
+                    @endif
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Score</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Status</th>
                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Actions</th>
                 </tr>
             </thead>
@@ -87,6 +90,23 @@
 
 
                         </td>
+
+                        @if (auth()->user()->role === "admin")
+                        <td class="px-4 py-3 text-sm font-semibold text-gray-800">
+                            @if (request()->input("archived") === "true")
+                                <span>
+                                    {{ $application->jobVacancy->company->name }}
+                                </span>
+                            @else
+                                <a href="{{ route("job-vacancy.show", $application->jobVacancy->id) }}"
+                                    class="text-blue-500 hover:underline">
+                                    {{ $application->jobVacancy->company->name }}
+                                </a>
+                            @endif
+                        </td>
+                        @endif
+
+
 
                         
                         <td class="px-4 py-3 text-sm font-semibold text-gray-800">

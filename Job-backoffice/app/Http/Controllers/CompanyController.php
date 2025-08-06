@@ -69,36 +69,30 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, string $id)
+    public function show(Request $request, string $id = null)
     {
-        $query = Company::latest();
-
-
-        if ($request->input("archived") == "true") {
-            $query->onlyTrashed();
-        }
-
-        $company = $query->findOrFail($id);
+        $company = $this->getCompany($id);
         return view("company.show", compact("company"));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id = null)
     {
-        $company = Company::findOrFail($id);
-
+        $company = $this->getCompany($id);
         return view("company.edit", compact("company"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CompanyUpdateRequest $request, string $id)
+    public function update(CompanyUpdateRequest $request, string $id = null)
     {
         $validatedData = $request->validated();
-        $company = Company::findOrFail($id);
+
+        $company = $this->getCompany($id);
+
         $company->update([
             'name' => $validatedData["name"],
             'location' => $validatedData["location"],
@@ -108,8 +102,15 @@ class CompanyController extends Controller
         $company->owner->update([
             "name" => $validatedData["ownerName"]
         ]);
+        if (auth()->user()->role == "admin") {
+            return redirect()->route('company.show', $id = null)->with('success', 'Company updated successfully.');
 
-        return redirect()->route('company.show', $id)->with('success', 'Company updated successfully.');
+        } else if (auth()->user()->role == 'company-owner') {
+            return redirect()->route('my-company.show')->with('success', 'Company updated successfully.');
+
+        }
+
+
     }
 
     /**
@@ -136,5 +137,16 @@ class CompanyController extends Controller
         // $owner->restore();
 
         return redirect()->route('company.index', ["archived" => "true"])->with('success', 'Company restored successfully.');
+    }
+
+
+    private function getCompany($id = null)
+    {
+        if (!$id) {
+            $company = Company::findOrFail(auth()->user()->company->id);
+        } else {
+            $company = Company::findOrFail($id);
+        }
+        return $company;
     }
 }

@@ -57,9 +57,9 @@ class User extends Authenticatable
             'deleted_at' => 'datetime',
         ];
     }
-    public function companies()
+    public function company()
     {
-        return $this->hasMany(Company::class, 'owner_id', 'id');
+        return $this->hasOne(Company::class, 'owner_id', 'id');
     }
     public function jobApplications()
     {

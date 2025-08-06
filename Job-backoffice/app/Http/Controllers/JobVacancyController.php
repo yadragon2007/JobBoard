@@ -18,9 +18,11 @@ class JobVacancyController extends Controller
     public function index(Request $request)
     {
 
-        $query = JobVacancy::latest();
+        $query = JobVacancy::latest()->withCount("applications as applicationsCount");
 
-
+        if (auth()->user()->role == "company-owner") {
+            $query->where("company_id", auth()->user()->company->id);
+        }
         if ($request->input("archived") == "true") {
             $query->onlyTrashed();
         }
@@ -36,7 +38,7 @@ class JobVacancyController extends Controller
     {
         $companies = Company::all();
         $categories = JobCategory::all();
-        return view("jobVacancy.create", compact(["companies" ,"categories"]));
+        return view("jobVacancy.create", compact(["companies", "categories"]));
     }
 
     /**

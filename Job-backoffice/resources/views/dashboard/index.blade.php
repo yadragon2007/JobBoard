@@ -43,7 +43,9 @@
                                 <tr class="text-gray-500">
                                     <th class="px-6 py-3 text-start text-sm font-semibold text-gray-600 w-10">ID</th>
                                     <th class="px-6 py-3 text-start text-sm font-semibold text-gray-600">JOB TITLE</th>
-                                    <th class="px-6 py-3 text-start text-sm font-semibold text-gray-600">COMPANY</th>
+                                    @if (auth()->user()->role == "admin")
+                                        <th class="px-6 py-3 text-start text-sm font-semibold text-gray-600">COMPANY</th>
+                                    @endif
                                     <th class="px-6 py-3 text-start text-sm font-semibold text-gray-600">APPLICATIONS
                                     </th>
                                 </tr>
@@ -53,7 +55,7 @@
                                     $counter = 1;
                                 @endphp
 
-                                @forelse ($mostAppliedJobs as $job)
+                                @forelse ($analytics["mostAppliedJobs"] as $job)
 
                                     <tr>
                                         <td class="px-6 py-3 text-sm font-semibold text-gray-800">{{ $counter }}
@@ -61,9 +63,12 @@
                                         <td class="px-6 py-3 text-sm font-semibold text-gray-800">
                                             {{ $job->title }}
                                         </td>
-                                        <td class="px-6 py-3 text-sm font-semibold text-gray-800">
-                                            {{ $job->company->name }}
-                                        </td>
+                                        @if (auth()->user()->role == "admin")
+                                            <td class="px-6 py-3 text-sm font-semibold text-gray-800">
+                                                {{ $job->company->name }}
+                                            </td>
+                                        @endif
+
                                         <td class="px-6 py-3 text-sm font-semibold text-gray-800">
                                             {{ $job->applicationsCount}}
                                         </td>
@@ -108,7 +113,7 @@
                                     $counter = 1;
                                 @endphp
 
-                                @forelse ($convertionRates as $convertionRate)
+                                @forelse ($analytics["convertionRates"] as $convertionRate)
 
                                     <tr>
                                         <td class="px-6 py-3 text-sm font-semibold text-gray-800">{{ $counter }}

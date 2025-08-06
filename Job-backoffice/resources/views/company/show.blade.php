@@ -20,16 +20,19 @@
 
     <div class="overflow-x-auto p-6">
         <div class="w-full px-6 py-4 rounded-lg shadow bg-white">
-            <div class="mb-4 flex items-center space-x-2">
-                <a href="{{ route("company.index") }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                        class="bi bi-arrow-right-short rotate-180" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8" />
-                    </svg>
-                </a>
+            @if (auth()->user()->role === "admin")
+                <div class="mb-4 flex items-center space-x-2">
+                    <a href="{{ route("company.index") }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            class="bi bi-arrow-right-short rotate-180" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8" />
+                        </svg>
+                    </a>
 
-            </div>
+                </div>
+            @endif
+
 
             <h3 class="text-bold text-2xl">Company informations</h3>
 
@@ -57,78 +60,93 @@
                     </a></p>
 
                 <div class="w-full flex justify-end space-x-6">
-                    <!-- edit -->
-                    <a class=" text-blue-500 over:text-blue-800"
-                        href="{{ route("company.edit", $company->id) }}">Edit</a>
-                    <!-- archived -->
-                    <form class=" text-red-500 hover:text-red-800" action="{{ route("company.destroy", $company->id) }}"
-                        method="post">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Archive</a>
-                    </form>
+                    @if (auth()->user()->role === "admin")
+                        <!-- edit -->
+                        <a class=" text-blue-500 over:text-blue-800"
+                            href="{{ route("company.edit", $company->id) }}">Edit</a>
+                    @elseif (auth()->user()->role === "company-owner")
+                        <!-- edit -->
+                        <a class=" text-blue-500 over:text-blue-800" href="{{ route("my-company.edit") }}">Edit</a>
+                    @endif
+
+
+                    @if (auth()->user()->role === "admin")
+                        <!-- archived -->
+                        <form class=" text-red-500 hover:text-red-800" action="{{ route("company.destroy", $company->id) }}"
+                            method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Archive</a>
+                        </form>
+                    @endif
+
                 </div>
             </div>
 
 
 
         </div>
-        <div class="w-full p-6 rounded-lg shadow bg-white mt-4">
-            <div class="flex justify-between items-center">
-                <h3 class="text-bold text-2xl">Jobs</h3>
-                @if (request()->input("ArchivedJobs") == "true" && request()->input("ArchivedJobs"))
-                    <a href="{{ route("company.show", ["company" => $company->id, "ArchivedJobs" => "false"]) }}"
-                        class="underline px-4 py-2 rounded-lg">Active</a>
-                @else
-                    <a href="{{ route("company.show", ["company" => $company->id, "ArchivedJobs" => "true"]) }}"
-                        class="underline px-4 py-2 rounded-lg">Archived</a>
-                @endif
-            </div>
 
-            <hr>
-            <!-- Jobs Container -->
-            <div class="">
-                @forelse ($company->jobVacancies as $job)
-                    <div class="mt-6">
-                        <h3 class="text-bold text-2xl">#{{$job->title}}</h3>
-                        <div class="p-4">
-                            <div class="mt-3">
-                                <strong>Description:</strong>
-                                <p>
-                                    {{$job->description}}
-                                </p>
+        @if (auth()->user()->role === "admin")
+            <div class="w-full p-6 rounded-lg shadow bg-white mt-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-bold text-2xl">Jobs</h3>
+                    @if (request()->input("ArchivedJobs") == "true" && request()->input("ArchivedJobs"))
+                        <a href="{{ route("company.show", ["company" => $company->id, "ArchivedJobs" => "false"]) }}"
+                            class="underline px-4 py-2 rounded-lg">Active</a>
+                    @else
+                        <a href="{{ route("company.show", ["company" => $company->id, "ArchivedJobs" => "true"]) }}"
+                            class="underline px-4 py-2 rounded-lg">Archived</a>
+                    @endif
+                </div>
+
+                <hr>
+                <!-- Jobs Container -->
+                <div class="">
+                    @forelse ($company->jobVacancies as $job)
+                        <div class="mt-6">
+                            <h3 class="text-bold text-2xl">#{{$job->title}}</h3>
+                            <div class="p-4">
+                                <div class="mt-3">
+                                    <strong>Description:</strong>
+                                    <p>
+                                        {{$job->description}}
+                                    </p>
+                                </div>
+                                <div class="mt-3">
+                                    <strong>Address:</strong>
+                                    <p>{{$job->location}}</p>
+                                </div>
+                                <div class="mt-3">
+                                    <strong>Salary:</strong>
+                                    <p>{{$job->salary}}</p>
+                                </div>
+                                <div class="mt-3">
+                                    <strong>Employment type:</strong>
+                                    <p>{{$job->employment_type}}</p>
+                                </div>
+                                <div class="mt-3 flex justify-end items-center space-x-4">
+                                    <a href="" class=" text-blue-500 hover:text-blue-800">Applications</a>
+                                    <a href="" class=" text-blue-500 hover:text-blue-800">Edit</a>
+                                    <a href="" class=" text-red-500 hover:text-red-800">Archive</a>
+                                </div>
                             </div>
-                            <div class="mt-3">
-                                <strong>Address:</strong>
-                                <p>{{$job->location}}</p>
-                            </div>
-                            <div class="mt-3">
-                                <strong>Salary:</strong>
-                                <p>{{$job->salary}}</p>
-                            </div>
-                            <div class="mt-3">
-                                <strong>Employment type:</strong>
-                                <p>{{$job->employment_type}}</p>
-                            </div>
-                            <div class="mt-3 flex justify-end items-center space-x-4">
-                                <a href="" class=" text-blue-500 hover:text-blue-800">Applications</a>
-                                <a href="" class=" text-blue-500 hover:text-blue-800">Edit</a>
-                                <a href="" class=" text-red-500 hover:text-red-800">Archive</a>
-                            </div>
+
                         </div>
 
-                    </div>
+                        <hr>
+                    @empty
+                        <p>There is no jobs.</p>
+                    @endforelse
 
-                    <hr>
-                @empty
-                    <p>There is no jobs.</p>
-                @endforelse
+                </div>
+
+
+
 
             </div>
+        @endif
 
 
-
-
-        </div>
     </div>
 </x-app-layout>
