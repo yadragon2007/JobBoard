@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
 
     // User
     Route::resource('user', UserController::class);
+    Route::put('user/{id}/restore', [UserController::class, "restore"])->name("user.restore");
 
 });
 
