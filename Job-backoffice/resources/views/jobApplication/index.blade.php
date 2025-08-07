@@ -98,7 +98,7 @@
                                     {{ $application->jobVacancy->company->name }}
                                 </span>
                             @else
-                                <a href="{{ route("job-vacancy.show", $application->jobVacancy->id) }}"
+                                <a href="{{ route("company.show", $application->jobVacancy->company->id) }}"
                                     class="text-blue-500 hover:underline">
                                     {{ $application->jobVacancy->company->name }}
                                 </a>

@@ -21,13 +21,8 @@
     <div class="overflow-x-auto p-6">
         <div class="w-full px-6 py-4 rounded-lg shadow bg-white">
             <div class="mb-4 flex items-center space-x-2">
-                <a href="{{ route("job-vacancy.index") }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                        class="bi bi-arrow-right-short rotate-180" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8" />
-                    </svg>
-                </a>
+               
+                <x-previous-page-arrow :default="route('job-vacancy.index') " :comeBack="true"/>   
 
             </div>
 
@@ -62,7 +57,6 @@
                         <p>{{$jobVacancy->employment_type}}</p>
                     </div>
                     <div class="mt-3 flex justify-end items-center space-x-4">
-                        <a href="" class=" text-blue-500 hover:text-blue-800">Applications</a>
                         <a href="{{ route("job-vacancy.edit", $jobVacancy->id) }}" class=" text-blue-500 hover:text-blue-800">Edit</a>
                         
                         <!-- archived -->

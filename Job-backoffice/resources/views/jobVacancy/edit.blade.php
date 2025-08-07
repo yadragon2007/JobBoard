@@ -8,16 +8,9 @@
 
     <div class="overflow-x-auto p-6">
         <div class="max-w-xl mx-auto p-6 bg-white rounded-lg shadow">
-            <div class="mb-4 flex items-center space-x-2">
-                <a href="{{ route("job-vacancy.show", $jobVacancy->id) }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                        class="bi bi-arrow-right-short rotate-180" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8" />
-                    </svg>
-                </a>
+           
+            <x-previous-page-arrow :default="route('job-vacancy.show',$jobVacancy->id) " :comeBack="false"/>   
 
-            </div>
             <form action="{{ route("job-vacancy.update", $jobVacancy->id) }}" method="post">
                 @csrf
                 @method("PUT")
@@ -133,9 +126,8 @@
 
 
                 <div class="flex justify-end items-center space-x-6 mt-2">
-                    <a href="{{ route("job-vacancy.show", $jobVacancy->id) }}">
-                        Cancel
-                    </a>
+                    <x-previous-page-cancel :default="route('job-vacancy.show', $jobVacancy->id)" :comeBack="false" />
+
                     <button type="submit"
                         class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
                         Update Job Vacancy

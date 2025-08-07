@@ -89,7 +89,6 @@
                                     @csrf
                                     @method('put')
                                     <button type="submit">restore</a>
-
                                 </form>
                             @else
 
@@ -100,7 +99,6 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit">Archive</a>
-
                                 </form>
 
                             @endif
